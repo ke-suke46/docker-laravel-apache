@@ -14,9 +14,9 @@ services:
       - DB_CONNECTION=mysql
       - DB_HOST=docker-laravel-db.cj8pmrix3zeb.ap-northeast-1.rds.amazonaws.com
       - DB_PORT=3306
-      - DB_DATABASE=${DB_NAME:-laravel_local}
-      - DB_USERNAME=${DB_USER:-phper}
-      - DB_PASSWORD=${DB_PASS:-secret}
+      - DB_DATABASE=${DB_NAME:-docker-laravel-db}
+      - DB_USERNAME=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASS:-myrdspassword}
 
   db:
     build:
