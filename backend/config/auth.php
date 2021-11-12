@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'defaults' => [
-        'guard' => 'web',
+    'defaults' => [//デフォルトの設定
+        'guard' => 'users',//デフォルトではusersを使う
         'passwords' => 'users',
     ],
 
@@ -36,6 +36,21 @@ return [
     */
 
     'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',//ユーザーテーブルから参照するという意味
+        ],
+
+        'users' => [
+            'driver' => 'session',
+            'provider' => 'users',//ユーザーテーブルから参照するという意味(下に記載がある)
+        ],
+
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
