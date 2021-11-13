@@ -21,51 +21,52 @@ class MemoController extends Controller
         $memos = $user->memo;
         $cond_title = $request->keyword;
         if($cond_title != '') {
-            $memos = Memo::where('title','like','%'.$cond_title.'%')->orderBy('created_at','desc')->paginate(5);
+            $notes = Memo::where('title','like','%'.$cond_title.'%')->where('user_id', Auth::id())->orderBy('created_at','desc')->paginate(5);
         } else {
-            $memos = Memo::orderBy('created_at', 'desc')->paginate(5);
+            $notes = Memo::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(5);
         }
-        return view('home', compact('memos'));
+        
+        return view('home', ['notes' => $notes]);
     }
 
     public function showSubmit($id = 0)
     {
         if ($id != 0) {
-            $memo = Memo::where('id', $id)->get()->first();
+            $note = Memo::where('id', $id)->get()->first();
         } else {
-            $memo = (object) ["id" => 0, "title" => "", "content" => ""];
+            $note = (object) ["id" => 0, "title" => "", "content" => ""];
         }
-        return view("submit", ['memo' => $memo]);
+        return view("submit", ['note' => $note]);
     }
 
-    public function store(Request $request)
-    {
-        $memo = new Memo();
-        $memo->user_id = $request->user()->id;
-        $memo->title = $request->input('title');
-        $memo->content = $request->input('content');
-        $memo->save();
+    // public function store(Request $request)
+    // {
+    //     $memo = new Memo();
+    //     $memo->user_id = $request->user()->id;
+    //     $memo->title = $request->input('title');
+    //     $memo->content = $request->input('content');
+    //     $memo->save();
 
-        return redirect('home');
-    }
+    //     return redirect('home');
+    // }
 
     public function postSubmit(Request $request, $id = 0)
     {
         
 
         if ($id == 0) {
-            $memo = new Memo();
-            $memo->title = $request->input('title');
-            $memo->content = $request->input('content');
-            $memo->user_id = $request->user()->id;
-            $memo->save();
+            $note = new Memo();
+            $note->title = $request->input('title');
+            $note->content = $request->input('content');
+            $note->user_id = $request->user()->id;
+            $note->save();
         } else {
-            $memo = Memo::find($id);
-            $memo = new Memo();
-            $memo->title = $request->input('title');
-            $memo->content = $request->input('content');
-            $memo->user_id = $request->user()->id;
-            $memo->save();
+            $note = Memo::find($id);
+            $note = new Memo();
+            $note->title = $request->input('title');
+            $note->content = $request->input('content');
+            $note->user_id = $request->user()->id;
+            $note->save();
         }
         return redirect()->route('home');
     }
